@@ -1,0 +1,16 @@
+{
+  "name": "ai-job-search",
+  "version": "1.0.0",
+  "description": "AI-powered job discovery, resume optimisation, job matching, interview preparation and application tracking.",
+  "author": {
+    "name": "Priyansh"
+  },
+  "license": "MIT",
+  "keywords": [
+    "career",
+    "jobs",
+    "resume",
+    "interview",
+    "job-search"
+  ]
+}
