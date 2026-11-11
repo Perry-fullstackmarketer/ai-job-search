@@ -4,7 +4,9 @@ This is the zero-additional-subscription runtime path for this repository. It us
 
 ## Cost and limits
 
-Google lists its Antigravity Individual plan at **$0/month**. The plan includes access to agent models and basic weekly rate limits. The exact baseline quota is not published as a fixed request count and can change. This is free-tier access, not unlimited agent reasoning. Stay on the Individual/free plan and do not enable paid AI credits or paid overages.
+Google lists its Antigravity Individual plan at **$0/month**. The free tier has basic weekly rate limits; Google does not publish a fixed request count, and limits/model availability can change. Google's current model matrix lists Claude Sonnet 4.6, Claude Opus 4.6, and GPT-OSS-120B among the models available on Free & Plus accounts. This is a Claude model accessed through Antigravity, not Claude Code or a Claude Pro subscription. See the current [model list](https://antigravity.google/docs/models) and verify the models shown for your account with `agy models`. Stay on the Individual/free plan and do not enable paid AI credits or paid overages.
+
+Google's current FAQ lists India among the supported geographies for personal accounts. Sign-in still depends on an eligible personal Google account and Google's age/region checks.
 
 Official references:
 - [Antigravity pricing](https://antigravity.google/pricing)
@@ -37,10 +39,11 @@ If PowerShell says `agy` is not recognized, first open a new terminal. If it is 
 
 ## 2. Sign in on the free plan
 
-1. Launch Antigravity App or Antigravity CLI and complete the browser sign-in with your personal Google account.
-2. Select the Individual/free plan. Do not select Google AI Pro, Ultra, a paid credit pool, or API pay-as-you-go.
-3. Use a model that is shown as included in your free account. Model availability and weekly usage limits may vary by account and capacity.
-4. Keep in mind that the agent model is cloud-hosted: prompts and any resume or project content you ask it to analyse may be sent to Google's service. The repository remains on your PC, but model processing is not fully local.
+1. Launch Antigravity CLI and complete browser sign-in with your personal Google account.
+2. Stay on the Individual/free plan. Do not select Google AI Pro, Ultra, a paid credit pool, or API pay-as-you-go.
+3. Run `agy models` in a separate PowerShell window to see the model slugs available to your account. Start `agy`, then use `/model` to select a model from the interactive CLI. Prefer Claude Sonnet 4.6 for normal development work; use Claude Opus 4.6 for harder repository analysis when it is available in your model list. These are Anthropic Claude models offered through Antigravity, not Claude Code.
+4. Run `/usage` to inspect the remaining quota. Free-tier usage has weekly rate limits; when the quota is exhausted, wait for the free refresh. Do not turn on paid AI credits or overages.
+5. Keep in mind that the agent model is cloud-hosted: prompts and any resume or project content you ask it to analyse may be sent to Google's service. The repository remains on your PC, but model processing is not fully local.
 
 ## 3. Open this repository
 
@@ -111,7 +114,7 @@ Do not move to form filling until both read-only tests pass.
 
 ## 6. Important limitations
 
-- The free Individual plan has weekly rate limits. If you reach the limit, wait for the free quota to refresh; do not enable paid overages.
+- The free Individual plan has weekly rate limits. Use `/usage` to check them. If you reach the limit, wait for the free quota to refresh; do not enable paid overages.
 - Antigravity is a cloud-model runtime, not a fully local model. Do not send sensitive documents unless you are comfortable with Google's data handling for your account and region.
 - Portal-specific adapters still require testing. The existence of Playwright does not mean Amazon Jobs, Indeed, or Workday have complete search adapters.
 - CAPTCHA, MFA, bot checks, and access restrictions must be handled manually. Never bypass them.
