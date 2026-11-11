@@ -1,7 +1,7 @@
 {
   "name": "ai-job-search",
-  "version": "1.1.0",
-  "description": "AI-powered job discovery, resume optimisation, job matching, interview preparation and application tracking, with a supervised browser agent for job portals.",
+  "version": "1.2.0",
+  "description": "AI-powered job discovery, resume optimisation, job matching, interview preparation and application tracking, with a supervised browser agent and Antigravity workspace support.",
   "author": {
     "name": "Priyansh"
   },
@@ -11,6 +11,8 @@
     "jobs",
     "resume",
     "interview",
-    "job-search"
+    "job-search",
+    "antigravity",
+    "playwright"
   ]
 }
