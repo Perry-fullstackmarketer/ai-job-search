@@ -29,7 +29,7 @@
   &nbsp;&nbsp;&nbsp;
   <a href="#customization"><b>Customization</b></a>
   &nbsp;&nbsp;&nbsp;
-  <a href="SETUP.md"><b>Setup guide</b></a>
+  <a href="SETUP.md"><b>Setup guide</b></a>\n  &nbsp;&nbsp;&nbsp;\n  <a href="ANTIGRAVITY_SETUP.md"><b>Free Antigravity CLI setup</b></a>\n  &nbsp;&nbsp;&nbsp;\n  <a href="UNIVERSAL_CAREER_AGENT.md"><b>Universal Career Agent</b></a>
 </p>
 
 > [!NOTE]
@@ -89,7 +89,7 @@ The framework encodes career guidance best practices, including structured evalu
 <details>
 <summary>Fine print: other agents, LaTeX engines, PDF text extraction</summary>
 
-- **Using a different agent tool** (Codex, Antigravity, Gemini CLI)? Start at [`AGENTS.md`](AGENTS.md) - the portal search skills work there out of the box, and [community forks](https://github.com/ai-job-search-dev/ai-job-search/discussions/78) adapt the full workflow.
+- **Using a different agent tool** (Codex or Antigravity CLI)? Start at [`AGENTS.md`](AGENTS.md). For the Windows Antigravity CLI setup and free Individual plan notes, see [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md). The portal search skills use the portable Agent Skills format; [community forks](https://github.com/ai-job-search-dev/ai-job-search/discussions/78) adapt the full workflow.
 - **LaTeX engines.** The CV compiles with `lualatex` (pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors); the cover letter compiles with `xelatex` because `cover.cls` requires `fontspec`. If using a minimal TeX install such as TinyTeX or BasicTeX, install the extra packages listed in [SETUP.md](SETUP.md#minimal-tex-install-tinytexbasictex).
 - **PDF text extraction.** `pypdf` is BSD-licensed and needs no Poppler. Poppler `pdftotext` remains a fallback (macOS: `brew install poppler`, Debian/Ubuntu: `apt install poppler-utils`, Windows: `choco install poppler`). If both are missing, the check degrades to a visual keyword review.
 
