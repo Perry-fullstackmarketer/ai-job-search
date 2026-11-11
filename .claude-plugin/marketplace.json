@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Career tools for job discovery, resume tailoring, interview preparation, and application tracking.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "ai-job-search",
       "source": "./plugins/ai-job-search",
       "description": "AI-assisted job discovery, role-fit evaluation, truthful resume and cover-letter tailoring, interview preparation, skill-gap analysis, and application tracking.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Priyansh"
       },

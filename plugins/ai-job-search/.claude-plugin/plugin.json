@@ -1,7 +1,7 @@
 {
   "name": "ai-job-search",
-  "version": "1.0.0",
-  "description": "AI-powered job discovery, resume optimisation, job matching, interview preparation and application tracking.",
+  "version": "1.1.0",
+  "description": "AI-powered job discovery, resume optimisation, job matching, interview preparation and application tracking, with a supervised browser agent for job portals.",
   "author": {
     "name": "Priyansh"
   },
