@@ -18,6 +18,7 @@ First identify the active runtime and inspect the workspace.
 - When installed as the `ai-job-search` marketplace plugin, this skill and its Playwright MCP configuration are bundled under `plugins/ai-job-search/`.
 - When running Claude Code directly from this repository, the workspace MCP configuration is the root `.mcp.json`.
 - If the repository's `.claude/` commands and skills are present, use the existing `/setup`, `/scrape`, `/rank`, `/apply`, `/interview`, `/upskill`, and `/outcome` workflows rather than rebuilding them.
+- Avoid registering two Playwright servers in the same Claude Code session. If the root `.mcp.json` and plugin `.mcp.json` are both loaded, inspect `/mcp` and disable one duplicate entry.
 
 ### Google Antigravity CLI
 
