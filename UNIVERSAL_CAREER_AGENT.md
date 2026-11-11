@@ -6,7 +6,7 @@ This repository adds a supervised browser-control layer to the existing AI Job S
 
 ### Recommended: Google Antigravity CLI (free individual plan)
 
-For users who do not have paid Claude Code access, use the Google Antigravity CLI. Its Individual plan is listed at $0/month and includes agent models with basic weekly rate limits. Google does not publish a fixed numeric quota for that baseline tier, and limits can change. Do not enable paid AI credits or billing if you intend to remain on the free plan.
+For users who do not have paid Claude Code access, use the Google Antigravity CLI. Google's Individual plan is listed at $0/month and includes agent models with basic weekly rate limits. Google does not publish a fixed numeric quota for that baseline tier, and limits/model availability can change. Do not enable paid AI credits or billing if you intend to remain on the free plan.
 
 See [ANTIGRAVITY_SETUP.md](ANTIGRAVITY_SETUP.md) for Windows installation, sign-in, workspace setup, and smoke tests.
 
@@ -33,7 +33,9 @@ The same Playwright server definition is intentionally stored in three runtime-s
 | Claude Code marketplace plugin installation | `plugins/ai-job-search/.mcp.json` |
 | Google Antigravity CLI workspace | `.agents/mcp_config.json` |
 
-Keep the three definitions aligned when the Playwright server command changes. Do not run multiple automation clients against the same browser profile at the same time.
+The first two entries are two ways to configure Playwright for Claude Code, not two servers that should normally run at once. **Use the root file for direct repository/workspace mode, or the plugin file for marketplace-plugin mode. If both are loaded, inspect `/mcp` and disable the duplicate Playwright entry.** Antigravity uses its separate workspace config.
+
+Keep the three definitions aligned when the Playwright server command changes.
 
 Current configuration:
 
@@ -79,7 +81,7 @@ Then confirm the agent can read a public job listing and identify a form field l
 - [ ] The chosen runtime launches from this repository.
 - [ ] Node.js 20+ and `npx` are available.
 - [ ] The runtime discovers the `universal-career-agent` skill.
-- [ ] Playwright MCP appears in the runtime's connected MCP servers.
+- [ ] Playwright MCP appears in the runtime's connected MCP servers exactly once.
 - [ ] The browser extension is installed and connected to the intended Chrome/Edge profile.
 - [ ] The agent reads the active tab title and URL without changing page state.
 - [ ] The agent can inspect a public job listing.
