@@ -30,6 +30,10 @@
   <a href="#customization"><b>Customization</b></a>
   &nbsp;&nbsp;&nbsp;
   <a href="SETUP.md"><b>Setup guide</b></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="ANTIGRAVITY_SETUP.md"><b>Free Antigravity CLI setup</b></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="UNIVERSAL_CAREER_AGENT.md"><b>Universal Career Agent</b></a>
 </p>
 
 > [!NOTE]
@@ -89,7 +93,7 @@ The framework encodes career guidance best practices, including structured evalu
 <details>
 <summary>Fine print: other agents, LaTeX engines, PDF text extraction</summary>
 
-- **Using a different agent tool** (Codex, Antigravity, Gemini CLI)? Start at [`AGENTS.md`](AGENTS.md) - the portal search skills work there out of the box, and [community forks](https://github.com/ai-job-search-dev/ai-job-search/discussions/78) adapt the full workflow.
+- **Using a different agent tool** (Codex or Antigravity CLI)? Start at [`AGENTS.md`](AGENTS.md). For the Windows Antigravity CLI setup and free Individual plan notes, see [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md). The portal search skills use the portable Agent Skills format; [community forks](https://github.com/ai-job-search-dev/ai-job-search/discussions/78) adapt the full workflow.
 - **LaTeX engines.** The CV compiles with `lualatex` (pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors); the cover letter compiles with `xelatex` because `cover.cls` requires `fontspec`. If using a minimal TeX install such as TinyTeX or BasicTeX, install the extra packages listed in [SETUP.md](SETUP.md#minimal-tex-install-tinytexbasictex).
 - **PDF text extraction.** `pypdf` is BSD-licensed and needs no Poppler. Poppler `pdftotext` remains a fallback (macOS: `brew install poppler`, Debian/Ubuntu: `apt install poppler-utils`, Windows: `choco install poppler`). If both are missing, the check degrades to a visual keyword review.
 
@@ -220,7 +224,8 @@ All claims in the CV and cover letter are verified against your actual profile. 
 <details>
 <summary><b>What makes this workflow different</b></summary>
 
-- **PDF verification loop.** Most LaTeX-resume templates produce "looks fine in the .tex" output that breaks in the PDF: job titles orphan to the next page, cover letters spill onto page 2, bullet fonts silently fall back to the body font. The `/apply` command compiles and visually inspects every PDF and applies targeted fixes (`\needspace`, `\enlargethispage`, font-matching wrappers for list items) until the layout is clean. This runs automatically on every application.
+- **PDF verification loop.** Most LaTeX-resume templates produce "looks fine in the .tex" output that breaks in the PDF: job titles orphan to the next page, cover letters spill onto page 2, bullet fonts silently fall back to the body font. The `/apply` command compiles and visually inspects every PDF and applies targeted fixes (`
+eedspace`, `\enlargethispage`, font-matching wrappers for list items) until the layout is clean. This runs automatically on every application.
 - **ATS verification on the PDF text layer.** An ATS reads the PDF's embedded text, not the rendered page — and LaTeX can silently produce PDFs whose text extracts as garbage (icon glyphs where the email should be, interleaved lines from multi-column layouts). `/apply` extracts the compiled CV's text layer with `pdftotext` and verifies contact details, reading order, and the posting's keyword coverage against what a parser actually sees. Honesty rule enforced: a keyword the profile doesn't support is acknowledged as a gap, never stuffed in.
 - **Relevance-weighted CV cutting.** When a CV overflows 2 pages, the workflow does not cut mechanically from the "oldest" section. It scores each candidate line by (a) relevance to the target posting, (b) uniqueness in the document, and (c) whether the cover letter depends on it, and cuts the lowest-total-score line first. An older-role bullet that hits posting keywords survives ahead of a recent-role bullet that does not.
 - **Drafter-reviewer separation.** The drafter writes; a second Claude agent, spawned with a fresh context, researches the company and critiques the drafts. The drafter then revises. This catches missed keywords, weak framing, and generic language that a single pass often leaves in.
