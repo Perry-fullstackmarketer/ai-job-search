@@ -1,107 +1,103 @@
 # Universal Career Agent — setup and verification
 
-This adds a browser-control layer to the existing AI Job Search workspace. It does not replace the existing `/setup`, `/scrape`, `/rank`, `/apply`, `/interview`, `/upskill`, or `/outcome` workflows.
+This repository adds a supervised browser-control layer to the existing AI Job Search workflow. It does not replace the existing `/setup`, `/scrape`, `/rank`, `/apply`, `/interview`, `/upskill`, or `/outcome` specifications.
+
+## Supported runtimes
+
+### Recommended: Google Antigravity CLI (free individual plan)
+
+For users who do not have paid Claude Code access, use the Google Antigravity CLI. Its Individual plan is listed at $0/month and includes agent models with basic weekly rate limits. Google does not publish a fixed numeric quota for that baseline tier, and limits can change. Do not enable paid AI credits or billing if you intend to remain on the free plan.
+
+See [ANTIGRAVITY_SETUP.md](ANTIGRAVITY_SETUP.md) for Windows installation, sign-in, workspace setup, and smoke tests.
+
+### Claude Code
+
+Claude Code remains supported for users who already have an eligible paid Claude plan or Anthropic API credits. A free Claude chat account alone does not provide the paid Claude Code access required by the upstream project. Do not purchase a plan just for this repository unless you decide the cost is worthwhile.
 
 ## What is being connected
 
-- **Career intelligence:** existing AI Job Search workflows and candidate profile.
-- **Browser execution:** Microsoft Playwright MCP.
+- **Career intelligence:** existing AI Job Search profile, portal-search skills, evaluation rules, CV/cover-letter workflows, interview preparation, and tracker.
+- **Browser execution:** Microsoft Playwright MCP connected to an existing authenticated browser session.
 - **Portal coverage goal:** Amazon Jobs, LinkedIn Jobs, Indeed, Workday-hosted career sites, and other employer career portals.
-- **Human approval:** required before a final application submission.
+- **Human approval:** required before any final application submission.
 
-Portal compatibility depends on each site's current UI, authentication, and automation policies. This setup is not a promise that every portal will work without intervention.
+The portal list is a compatibility goal, not a claim that each portal has a dedicated working adapter. Existing search adapters must be inspected and tested individually. Browser access to a site is not equivalent to a tested search integration.
 
-## Important: marketplace vs MCP server
+## Configuration locations
 
-The GitHub repositories shown in the setup screenshots are MCP servers or application projects, not necessarily Claude plugin marketplaces. Claude's marketplace installer expects a repository containing a valid `.claude-plugin/marketplace.json`. Do not add `microsoft/playwright-mcp` or unrelated application repositories as marketplaces.
+The same Playwright server definition is intentionally stored in three runtime-specific locations:
 
-This repository already contains its own marketplace manifest. Playwright is connected separately as an MCP server through the root `.mcp.json`.
+| Runtime | Configuration |
+|---|---|
+| Claude Code opened from this repository | Root `.mcp.json` |
+| Claude Code marketplace plugin installation | `plugins/ai-job-search/.mcp.json` |
+| Google Antigravity CLI workspace | `.agents/mcp_config.json` |
 
-## Requirements
+Keep the three definitions aligned when the Playwright server command changes. Do not run multiple automation clients against the same browser profile at the same time.
 
-- Node.js 20 or newer.
-- Claude Code installed and authenticated.
-- Microsoft Edge or Google Chrome.
-- Playwright MCP browser extension installed in the browser profile you intend to use.
-- This repository cloned locally.
+Current configuration:
 
-Official references:
-- Playwright MCP: https://github.com/microsoft/playwright-mcp
-- Playwright browser extension: https://playwright.dev/mcp/configuration/browser-extension
-- Playwright MCP setup: https://playwright.dev/docs/getting-started-mcp
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--extension"]
+    }
+  }
+}
+```
 
-## Setup on Windows
+## Claude marketplace vs MCP server
 
-1. Open PowerShell in the local repository folder.
-2. Confirm prerequisites:
+The repository contains its own Claude marketplace manifest at `.claude-plugin/marketplace.json`. The `ai-job-search` plugin is in `plugins/ai-job-search/`; its `.claude-plugin/plugin.json`, `skills/`, and `.mcp.json` are packaged together.
 
-   ```powershell
-   node --version
-   npx --version
-   claude --version
-   ```
+An MCP server repository is not automatically a Claude plugin marketplace. Do not add `microsoft/playwright-mcp` or unrelated application repositories as marketplace sources.
 
-   Use Node.js 20 or newer.
+## Browser setup
 
-3. Install the Playwright MCP browser extension in the Edge or Chrome profile where you are already signed in to the job portals. Use the official Playwright documentation above to locate the extension.
-4. Confirm the repository-root `.mcp.json` exists. It configures:
+1. Install the Playwright MCP browser extension in the Chrome or Edge profile you intend to use. Use the official [Playwright browser-extension guide](https://playwright.dev/mcp/configuration/browser-extension).
+2. Open the browser yourself and sign in to the target career portal normally.
+3. Complete SSO and MFA yourself. Never share credentials or session cookies with the agent.
+4. Start the chosen runtime from the repository root. Approve the Playwright MCP server when prompted.
+5. Confirm the server is connected before asking it to inspect a page.
 
-   ```json
-   {
-     "mcpServers": {
-       "playwright": {
-         "command": "npx",
-         "args": ["-y", "@playwright/mcp@latest", "--extension"]
-       }
-     }
-   }
-   ```
+## Read-only smoke test
 
-5. Close and reopen Claude Code from this repository so it loads the project MCP configuration. Approve the Playwright MCP server when Claude Code asks.
-6. Open Edge/Chrome and the target career portal yourself. Sign in normally and complete any MFA/SSO prompts yourself.
-7. In Claude Code, ask:
+Use this prompt in the chosen agent:
 
-   ```text
-   Use Playwright to inspect the currently open browser tab. Do not click Apply or Submit.
-   Tell me the page title, current URL, and the visible job/application sections.
-   ```
+```text
+Use the Playwright MCP server to inspect the currently open browser tab.
+Do not navigate, click, type, submit, or change the page.
+Report the page title, current URL, and visible job/application sections.
+```
 
-8. Confirm that Claude can inspect the intended tab. Then test a harmless navigation to a public job listing before using a live application form.
+Then confirm the agent can read a public job listing and identify a form field label without changing account or application data.
 
-## Smoke test checklist
+## Smoke-test checklist
 
-- [ ] `node --version` reports v20 or newer.
-- [ ] `npx --version` succeeds.
-- [ ] Playwright MCP appears in Claude Code's connected MCP servers.
-- [ ] The browser extension is installed and connected.
-- [ ] Claude can read the title and URL of the current tab.
-- [ ] Claude can inspect a public job listing without changing account data.
-- [ ] Claude can read a form field label without entering or submitting data.
-- [ ] The existing `/apply` workflow still evaluates fit and prepares documents.
-- [ ] A final application submission is blocked until the user explicitly approves that specific application.
+- [ ] The chosen runtime launches from this repository.
+- [ ] Node.js 20+ and `npx` are available.
+- [ ] The runtime discovers the `universal-career-agent` skill.
+- [ ] Playwright MCP appears in the runtime's connected MCP servers.
+- [ ] The browser extension is installed and connected to the intended Chrome/Edge profile.
+- [ ] The agent reads the active tab title and URL without changing page state.
+- [ ] The agent can inspect a public job listing.
+- [ ] The agent can read form labels without entering or submitting data.
+- [ ] The existing fit-evaluation and application-preparation workflow remains available in the selected runtime.
+- [ ] The agent stops for explicit approval before each final application submission.
 
-## Using it
+## Portal coverage
 
-From Claude Code in this repository, invoke the `universal-career-agent` skill or ask naturally, for example:
+Existing adapters live under `.agents/skills/`. Before claiming support for a portal, inspect its skill, run its documented search, verify the results are current, and confirm its location/keyword filters. Amazon Jobs, Indeed, and Workday still require separate live validation before they can be described as supported search adapters.
 
-- "Find marketing and business development roles in India on Amazon Jobs and LinkedIn."
-- "Inspect this Workday job posting and evaluate it against my profile."
-- "Prepare the application for this role, fill the non-sensitive fields, and stop before final submission."
+If a portal cannot be controlled reliably, fall back to a user-provided job URL or pasted job description and continue with the offline fit evaluation and application-preparation workflow.
 
-The agent should continue using the repository's existing fit evaluation, CV tailoring, cover-letter generation, interview preparation, and application tracking rules.
+## Privacy and security
 
-## Using the same browser from multiple AI clients
-
-A browser profile should not be controlled by two automation clients at the same time. Do not run Claude Code and another Playwright MCP client against the same profile concurrently.
-
-Claude Code can use this local stdio MCP configuration. ChatGPT custom MCP connections are a separate capability: ChatGPT connects to a remote HTTPS MCP endpoint or a supported Secure MCP Tunnel, not directly to a local stdio process. Availability depends on the ChatGPT plan and workspace permissions. On plans without custom MCP access, use ChatGPT for analysis of exported job descriptions/application data, while Claude Code controls the local authenticated browser.
-
-Do not publish a local MCP server or expose browser-control endpoints to the public internet without authentication, authorization, and a reviewed security design.
-
-## Privacy
-
-- Never commit passwords, OTPs, cookies, browser profiles, or session exports.
-- Do not place personal candidate documents in a public repository.
-- Keep the local candidate profile and application records in a private working copy.
-- Use normal sign-in, SSO, and MFA flows; pause for manual verification when required.
-- Review every application before submission.
+- Do not put personal candidate documents in this public repository. Keep the populated `CLAUDE.md`, CV, documents, and application history in a private working copy.
+- Never commit passwords, OTPs, cookies, browser profiles, tokens, or session exports.
+- Do not expose a local MCP server or browser-control endpoint to the public internet.
+- Follow site terms, access policies, rate limits, and normal sign-in flows.
+- Stop for CAPTCHA, MFA, bot checks, or other access challenges; do not attempt to bypass them.
+- Review every application before submission. Final submission always requires explicit approval for that specific application.
